@@ -12,9 +12,13 @@ public class Client {
 	public void startConnection(String ip, int port) {
 		
 		System.out.println("Welcome to our ACE Game! This is a fabulous dice game. You are playing from" + ip);
-		System.out.print("prompt> ");
-		System.out.println("Roll a dice = r, exit = e, cheat = c");
-		System.out.println("Now enter your choice and let's play! >>>");
+		System.out.println("Dice game prompt> ");
+		System.out.println("Roll a dice = d");
+		System.out.println("Rock Paper Scissors game prompt> ");
+		System.out.println("Rock = r, paper = p, scissors = s");
+		System.out.println("Other prompt> ");
+		System.out.println("exit = e, cheat = c");
+		System.out.println("Now enter your choice and let\'s play! >>>");
 		
 		try {
 			clientSocket = new Socket(ip, port);

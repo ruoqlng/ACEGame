@@ -134,7 +134,7 @@ class RunnableServer implements Runnable {
 				}
 			} else if ("e".contentEquals(lineFromClient)) {
 				break;
-			} else if ("r".contentEquals(lineFromClient)){
+			} else if ("d".contentEquals(lineFromClient)){
 				int result = play(lineFromClient);
 
 				if (result == 0) {
@@ -147,9 +147,39 @@ class RunnableServer implements Runnable {
 					out.println("You rolled a " + this.clientDice + " and the server rolled a " + this.serverDice);
 					out.println("You lose!");
 				}
-			} else{
-				out.println("We couldn\'t understand you ;n; Please enter something again.");
-				out.println("Roll a dice = r, exit = e, cheat = c");
+			} else if ("r".contentEquals(lineFromClient) || "p".contentEquals(lineFromClient) || "s".contentEquals(lineFromClient)){
+				int RPSresult = playRPS(lineFromClient);
+
+				if (RPSresult == 0) {
+					out.println("It's a tie");
+				} else if (RPSresult == 1) {
+					out.println("You win!");
+				} else if (RPSresult == -1) {
+					out.println("You lose!");
+				}
+			// incentive
+			} else if ("D".contentEquals(lineFromClient)){
+				int sDice, cDice;
+				Random randomC = new Random();
+				Random randomS = new Random();
+				sDice = randomS.nextInt(6) + 1;
+				cDice = randomC.nextInt(6) + 1;
+				
+				if (sDice < cDice){
+					out.println("You rolled a " + cDice + " and the server rolled a " + sDice);
+					out.println("You win!");
+				} else {
+					out.println("You rolled a " + cDice + " and the server rolled a " + cDice);
+					out.println("It's a tie!");
+				}
+			} else {
+				out.println("Dice game prompt> ");
+				out.println("Roll a dice = d");
+				out.println("Rock Paper Scissors game prompt> ");
+				out.println("Rock = r, paper = p, scissors = s");
+				out.println("Other prompt> ");
+				out.println("exit = e, cheat = c");
+				out.println("Now enter your choice and let\'s play! >>>");
 			}
 
 		}
@@ -171,6 +201,44 @@ class RunnableServer implements Runnable {
             res = -1;
 
 		return res;
+	}
+
+	public int playRPS(String clientRes) {
+		String serverRes = "";
+		Random random = new Random();
+		int first = random.nextInt(3);
+
+		if (first == 0) {
+			serverRes = "r";
+		} else if (first == 1) {
+			serverRes = "p";
+		} else if (first == 2) {
+			serverRes = "s";
+		}
+
+		if (serverRes.equals(clientRes)) {
+			return 0;
+		} else if (clientRes.equals("r")) {
+			if (serverRes.equals("p")) {
+				return 1;
+			} else if (serverRes.equals("p")) {
+				return -1;
+			}
+		} else if (clientRes.equals("p")) {
+			if (serverRes.equals("r")) {
+				return 1;
+			} else if (serverRes.equals("s")) {
+				return -1;
+			}
+		} else if (clientRes.equals("s")) {
+			if (serverRes.equals("r")) {
+				return -1;
+			} else if (serverRes.equals("p")) {
+				return 1;
+			}
+		}
+
+		return -2;
 	}
 
 }
